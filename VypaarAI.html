@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vypaar AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#f4f6f8;
+}
+
+.dashboard-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 30px;
+background:#fff;
+border-bottom:1px solid #ddd;
+}
+
+.dashboard-header h1{
+margin:0;
+font-size:22px;
+}
+
+.dashboard-header p{
+margin:4px 0 0;
+color:#666;
+font-size:14px;
+}
+
+.right{
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.status.live{color:green;}
+
+.app-container{
+display:flex;
+height:100vh;
+}
+
+.sidebar{
+width:230px;
+background:#ffffff;
+padding:20px;
+border-right:1px solid #ddd;
+}
+
+.logo{
+margin-bottom:30px;
+text-align:center;
+}
+
+.nav{
+list-style:none;
+padding:0;
+}
+
+.nav-item{
+padding:12px;
+cursor:pointer;
+border-radius:6px;
+margin-bottom:8px;
+}
+
+.nav-item:hover{
+background:#08b7f6;
+color:#fff;
+}
+
+.nav-item.active{
+background:#2563eb;
+color:#fff;
+}
+
+.main-content{
+flex:1;
+padding:30px;
+overflow:auto;
+}
+
+.dashboard-section{
+display:none;
+}
+
+.dashboard-section.active{
+display:block;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.stat-card{
+background:#fff;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+border-left:4px solid #2563eb;
+}
+
+.stat-card.green{border-left-color:#10b981;}
+.stat-card.blue{border-left-color:#3b82f6;}
+.stat-card.orange{border-left-color:#f59e0b;}
+.stat-card.red{border-left-color:#ef4444;}
+
+.stat-label{font-size:13px;color:#666;}
+.stat-value{font-size:26px;font-weight:bold;margin:6px 0;}
+
+.charts-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.chart-container{
+background:#fff;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chart-wrapper{
+height:300px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #eee;
+text-align:left;
+}
+
+th{
+background:#f3f4f6;
+}
+
+.status-badge{
+padding:4px 8px;
+border-radius:4px;
+font-size:12px;
+font-weight:bold;
+}
+
+.completed{background:#d1fae5;color:#065f46;}
+.shipped{background:#dbeafe;color:#0c4a6e;}
+.pending{background:#fef3c7;color:#92400e;}
+
+.table-container{
+background:#fff;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+margin-bottom:20px;
+}
+
+.top-product-section{
+background:#fff;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+margin-bottom:30px;
+border-left:4px solid #10b981;
+}
+
+.top-product-section h3{
+margin-top:0;
+color:#10b981;
+}
+
+.top-product-section p{
+margin:10px 0;
+}
+
+.top-product-section ul{
+list-style:none;
+padding:0;
+}
+
+.top-product-section li{
+padding:5px 0;
+border-bottom:1px solid #eee;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="dashboard-header">
+<div>
+<h1>VYPAAR AI</h1>
+<p>Today's Overview</p>
+</div>
+
+<div class="right">
+<span class="status live">● Live</span>
+
+<select>
+<option>EN</option>
+<option>हिंदी</option>
+</select>
+</div>
+</header>
+
+
+<div class="app-container">
+
+<aside class="sidebar">
+
+
+
+<ul class="nav">
+
+<li class="nav-item active" data-section="dashboard">📊 Dashboard</li>
+<li class="nav-item" data-section="orders">🤖 Orders</li>
+<li class="nav-item" data-section="inventory">🔝 Top Products</li>
+
+
+</ul>
+
+</aside>
+
+
+<main class="main-content">
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="dashboard-section active">
+
+<div class="stats-grid">
+
+<div class="stat-card green">
+<div class="stat-label">Total Sales</div>
+<div class="stat-value">₹45,200</div>
+</div>
+
+<div class="stat-card blue">
+<div class="stat-label">Total Orders</div>
+<div class="stat-value">156</div>
+</div>
+
+<div class="stat-card orange">
+<div class="stat-label">Inventory Items</div>
+<div class="stat-value">342</div>
+</div>
+
+<div class="stat-card red">
+<div class="stat-label">Revenue</div>
+<div class="stat-value">₹1,25,600</div>
+</div>
+
+</div>
+
+<div class="top-product-section">
+<h3>🏆 Top Selling Product</h3>
+<p>Shopkeeper, your highest selling product this week is <strong>Milk</strong> with <strong>50 units</strong> sold!</p>
+<p>Other top products:</p>
+<ul>
+<li><strong>Cheese</strong> - 30 units</li>
+<li><strong>Yogurt</strong> - 25 units</li>
+<li><strong>Bread</strong> - 20 units</li>
+<li><strong>Eggs</strong> - 18 units</li>
+<li><strong>Butter</strong> - 16 units</li>
+<li><strong>Rice</strong> - 15 units</li>
+<li><strong>Wheat Flour</strong> - 14 units</li>
+<li><strong>Sugar</strong> - 12 units</li>
+<li><strong>Salt</strong> - 11 units</li>
+<li><strong>Tea</strong> - 10 units</li>
+<li><strong>Coffee</strong> - 9 units</li>
+<li><strong>Cooking Oil</strong> - 8 units</li>
+<li><strong>Apples</strong> - 7 units</li>
+<li><strong>Potatoes</strong> - 6 units</li>
+<li><strong>Chicken</strong> - 5 units</li>
+</ul>
+</div>
+
+
+<div class="charts-grid">
+
+<div class="chart-container">
+<h3>Sales Trend</h3>
+<div class="chart-wrapper">
+<canvas id="salesChart"></canvas>
+</div>
+</div>
+
+<div class="chart-container">
+<h3>Order Status</h3>
+<div class="chart-wrapper">
+<canvas id="orderChart"></canvas>
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ORDERS -->
+<div id="orders" class="dashboard-section">
+
+<div class="table-container">
+<h3>Orders</h3>
+
+<table>
+<tr>
+<th>ID</th>
+<th>Customer</th>
+<th>Amount</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>#ORD001</td>
+<td>Rajesh Kumar</td>
+<td>₹2500</td>
+<td><span class="status-badge completed">Completed</span></td>
+</tr>
+
+<tr>
+<td>#ORD002</td>
+<td>Priya Singh</td>
+<td>₹1800</td>
+<td><span class="status-badge shipped">Shipped</span></td>
+</tr>
+
+<tr>
+<td>#ORD003</td>
+<td>Miku Singh</td>
+<td>₹2000</td>
+<td><span class="status-badge shipped">Shipped</span></td>
+</tr>
+<tr>
+<td>#ORD004</td>
+<td>Billa Rawat</td>
+<td>₹2500</td>
+<td><span class="status-badge shipped">Shipped</span></td>
+</tr>
+
+</table>
+</div>
+
+</div>
+
+
+<!-- Top Products -->
+<div id="inventory" class="dashboard-section">
+
+<div class="table-container">
+<h3>Top Products</h3>
+<table>
+<tr>
+<th>ID</th>
+<th>Product</th>
+<th>Amount</th>
+
+</tr>
+
+<tr>
+<td>#PR001</td>
+<td>Milk</td>
+<td>₹35</td>
+
+</tr>
+
+<tr>
+<td>#PR002</td>
+<td>Cheese</td>
+<td>₹120</td>
+
+</tr>
+
+<tr>
+<td>#PR003</td>
+<td>Yogurt</td>
+<td>₹200</td>
+
+</tr>
+<tr>
+<td>#PR004</td>
+<td>Bread</td>
+<td>₹250</td>
+</tr>
+<tr>
+<td>#PR005</td>
+<td>Eggs</td>
+<td>₹190</td>
+</tr>
+<tr>
+<td>#PR006</td>
+<td>Butter</td>
+<td>₹100</td>
+</tr>
+<tr>
+<td>#PR006</td>
+<td>Rice</td>
+<td>₹120</td>
+</tr>
+<tr>
+<td>#PR007</td>
+<td>Wheat Flour</td>
+<td>₹130</td>
+</tr>
+<tr>
+<td>#PR008</td>
+<td>Sugar</td>
+<td>₹160</td>
+</tr>
+<tr>
+<td>#PR009</td>
+<td>Salt</td>
+<td>₹190</td>
+</tr>
+<tr>
+<td>#PR010</td>
+<td>Tea</td>
+<td>₹100</td>
+</tr>
+<tr>
+<td>#PR011</td>
+<td>Coffee</td>
+<td>₹100</td>
+</tr>
+<tr>
+<td>#PR012</td>
+<td>Cooking Oil</td>
+<td>₹100</td>
+</tr>
+<tr>
+<td>#PR013</td>
+<td>Apples</td>
+<td>₹100</td>
+</tr>
+<tr>
+<td>#PR014</td>
+<td>Potatoes</td>
+<td>₹100</td>
+</tr>
+<tr>
+<td>#PR015</td>
+<td>Chicken</td>
+<td>₹140</td>
+</tr>
+</table>
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+</main>
+</div>
+
+
+<script>
+
+/* NAVIGATION */
+
+document.querySelectorAll(".nav-item").forEach(item=>{
+item.addEventListener("click",()=>{
+
+document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active"));
+item.classList.add("active");
+
+document.querySelectorAll(".dashboard-section").forEach(sec=>sec.classList.remove("active"));
+
+document.getElementById(item.dataset.section).classList.add("active");
+
+});
+});
+
+
+/* CHARTS */
+
+new Chart(document.getElementById("salesChart"),{
+type:"line",
+data:{
+labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+datasets:[{
+label:"Sales",
+data:[1200,1900,3000,2500,2200,3100,4000],
+borderColor:"#2563eb",
+fill:false,
+tension:0.4
+}]
+}
+});
+
+
+new Chart(document.getElementById("orderChart"),{
+type:"doughnut",
+data:{
+labels:["Completed","Shipped","Pending"],
+datasets:[{
+data:[90,40,26],
+backgroundColor:["#10b981","#3b82f6","#f59e0b"]
+}]
+}
+});
+
+</script>
+
+</body>
+</html>
